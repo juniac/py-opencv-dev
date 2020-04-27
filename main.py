@@ -10,7 +10,7 @@ width = 3840//4
 height = 2160//4
 
 display = Display(width, height)
-F = 1
+F = 200
 K = np.array(([F, 0, width//2], [0, F, height//2],[0, 0, 1]))
 feature_extractor = Extractor(K)
 # orb = cv2.ORB_create()
@@ -36,7 +36,7 @@ def process_frame(image):
 
 if __name__ == "__main__":
     # cap = cv2.VideoCapture('videos/kyushu.mov')
-    cap = cv2.VideoCapture('videos/scotland.mov')
+    cap = cv2.VideoCapture('videos/destiny_short.mp4')
     if (cap.isOpened() == False):
         print("Error opening video")
     while(cap.isOpened()):

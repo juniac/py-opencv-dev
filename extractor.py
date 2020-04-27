@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 from skimage.measure import ransac
 from skimage.transform import FundamentalMatrixTransform
+from skimage.transform import EssentialMatrixTransform
+
 
 # turn [[x,y]] -> [[x,y,1]]
 def add_ones(x):
@@ -56,12 +58,13 @@ class Extractor(object):
             # ret[:, :, 0] -= image.shape[0]//2
             # ret[:, :, 1] -= image.shape[1]//2
             model, inliers = ransac((ret[:, 0], ret[:, 1]),
-                                    FundamentalMatrixTransform,
+                                    # FundamentalMatrixTransform,
+                                    EssentialMatrixTransform,
                                     min_samples=8,
-                                    residual_threshold=1,
+                                    residual_threshold=0.005,
                                     max_trials=100)
             ret = ret[inliers]
-            # s, v, d = np.linalg.svd(model.params)
+            s, v, d = np.linalg.svd(model.params)
 
 
         self.last = {'key_points': key_points, 'descriptors': descriptors}
