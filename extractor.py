@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+from skimage.measure import ransac
+from skimage.transform import FundamentalMatrixTransform
 
 class FeatureExtractor(object):
 
@@ -22,9 +24,19 @@ class FeatureExtractor(object):
             matches = self.bf.knnMatch(descriptors, self.last['descriptors'], k=2)
             for m,n in matches:
                 if m.distance < 0.75 * n.distance:
-                    ret.append((key_points[m.queryIdx], self.last['key_points'][m.trainIdx]))
-
+                    key_point1 = key_points[m.queryIdx].pt
+                    key_point2 = self.last['key_points'][m.trainIdx].pt
+                    ret.append((key_point1, key_point2))
         #    matches = zip([key_points[m.queryIdx] for m in matches], [self.last['key_points'][m.trainIdx] for m in matches])
+        # filter
+        if len(ret) > 0:
+            ret = np.array(ret)
+            model, inliers = ransac((ret[:, 0], ret[:, 1]),
+                                    FundamentalMatrixTransform,
+                                    min_samples=8,
+                                    residual_threshold=1,
+                                    max_trials=100)
+            ret = ret[inliers]
 
         self.last = {'key_points': key_points, 'descriptors': descriptors}
 

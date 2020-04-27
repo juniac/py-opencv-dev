@@ -18,8 +18,8 @@ def process_frame(image):
     matches = feature_extractor.extract(image)
 
     for point1, point2 in matches:
-        x, y = map(lambda x: int(round(x)), point1.pt)
-        match_x, match_y = map(lambda x: int(round(x)), point2.pt)
+        x, y = map(lambda x: int(round(x)), point1)
+        match_x, match_y = map(lambda x: int(round(x)), point2)
         cv2.circle(image, (x,y), color=(0, 255, 0), radius=3)
         cv2.line(image, (x, y), (match_x, match_y), color=(255, 0, 0))
     display.paint(image)
@@ -28,7 +28,8 @@ def process_frame(image):
     # print(image.shape)
 
 if __name__ == "__main__":
-    cap = cv2.VideoCapture('videos/kyushu.mov')
+    # cap = cv2.VideoCapture('videos/kyushu.mov')
+    cap = cv2.VideoCapture('videos/scotland.mov')
     if (cap.isOpened() == False):
         print("Error opening video")
     while(cap.isOpened()):

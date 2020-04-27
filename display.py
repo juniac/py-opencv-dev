@@ -17,7 +17,7 @@ class Display(object):
 
         # print(dir(window))
         # surface = sdl2.ext.pixels2d(self.window.get_surface())
-        surface = sdl2.ext.pixels3d(self.window.get_surface())
-        surface[:, :, 0:3] = image.swapaxes(0, 1)
+        surf = sdl2.ext.pixels3d(self.window.get_surface())
+        surf[:, :, 0:3] = image.swapaxes(0, 1)
         
         self.window.refresh()
